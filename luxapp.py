@@ -1,6 +1,6 @@
 from html import escape
 from flask import Flask, request, make_response, redirect, url_for
-from common import get_header
+from common import get_header, get_footer
 
 
 app = Flask(__name__)
@@ -36,10 +36,12 @@ def index():
     html += '<input id="btn" type="submit" value="Search">'
     html += '</div>'
     html += '</form>'
+    html += get_footer()
     html += '</html>'
 
     response = make_response(html)
     return response
+
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -47,4 +49,3 @@ def search():
     Classification = request.args.get('Classification')
     Agent = request.args.get('Agent')
     Department = request.args.get('Department')
-    
