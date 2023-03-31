@@ -20,7 +20,7 @@ def get_footer():
     return html
 
 
-def get_form(label="", department="", agent="", classifier=""):
+def get_style():
     html = """<!DOCTYPE html>
     <html>
     <style>
@@ -41,8 +41,25 @@ def get_form(label="", department="", agent="", classifier=""):
     return html
 
 
-def get_form():
-    html = ""
+def get_form(label="", department="", agent="", classifier=""):
+    html = """<!DOCTYPE html>
+    <html>
+    <style>
+      div {
+        margin-bottom: 10px;
+      }
+      label {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+        padding-right: 10px;
+      }
+      .container{
+      text-align: center;
+      width: 350px;
+      }
+    </style>"""
+    html += get_header()
     html += '<form action="search" method="get">'
     html += f'<div><label>Label</label><input type="text" name="Label" value={label}></div>'
     html += f'<div><label>Classification</label><input type="text" name="Classification" value={classifier}></div>'
