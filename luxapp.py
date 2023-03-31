@@ -68,4 +68,8 @@ def search():
     html += '</html>'
 
     response = make_response(html)
+    response.set_cookie('prev_label', label_res)
+    response.set_cookie('prev_classifier', classification_res)
+    response.set_cookie('prev_agent', agent_res)
+    response.set_cookie('prev_department', department_res)
     return response

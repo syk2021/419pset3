@@ -19,7 +19,7 @@ def get_footer():
     return html
 
 
-def get_form():
+def get_form(label="", department="", agent="", classifier=""):
     html = """<!DOCTYPE html>
     <html>
     <style>
@@ -39,10 +39,10 @@ def get_form():
     </style>"""
     html += get_header()
     html += '<form action="search" method="get">'
-    html += '<div><label>Label</label><input type="text" name="Label"></div>'
-    html += '<div><label>Classification</label><input type="text" name="Classification"></div>'
-    html += '<div><label>Agent</label><input type="text" name="Agent"></div>'
-    html += '<div><label>Department</label><input type="text" name="Department"></div>'
+    html += f'<div><label>Label</label><input type="text" name="Label" value={label}></div>'
+    html += f'<div><label>Classification</label><input type="text" name="Classification" value={classifier}></div>'
+    html += f'<div><label>Agent</label><input type="text" name="Agent" value={agent}></div>'
+    html += f'<div><label>Department</label><input type="text" name="Department" value={department}></div>'
     html += '<div class="container">'
     html += '<input id="btn" type="submit" value="Search">'
     html += '</div>'
