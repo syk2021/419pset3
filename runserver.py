@@ -1,7 +1,7 @@
 
 import argparse
 import sys
-from app import app
+from luxapp import app
 
 if __name__ == '__main__':
 
