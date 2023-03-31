@@ -26,9 +26,10 @@ def search():
     agent_res = request.args.get('Agent')
     department_res = request.args.get('Department')
 
+    html = get_style()
+    html += get_header()
+
     if not label_res and not classification_res and not agent_res and not department_res:
-        html = get_style()
-        html += get_header()
         html += "No search terms provided. Please enter some search terms."
         html += get_form()
         html += get_footer()
@@ -56,8 +57,6 @@ def search():
         row_gen += f'<td>{row[4]}</td>'
         row_gen += '</tr>'
 
-    html = get_style()
-    html += get_header()
     html += get_form()
 
     html += f"""
