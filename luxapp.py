@@ -1,6 +1,6 @@
 from html import escape
 from flask import Flask, request, make_response, redirect, url_for
-from common import get_header, get_footer, get_form, DB_NAME
+from common import get_header, get_footer, get_form, get_style, DB_NAME
 from query import LuxQuery, LuxDetailsQuery
 import json
 
@@ -10,9 +10,10 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def index():
 
-    html = get_form()
+    html = get_style()
+    html += get_header()
+    html += get_form()
     html += get_footer()
-    html += '</html>'
 
     response = make_response(html)
     return response
@@ -24,6 +25,15 @@ def search():
     classification_res = request.args.get('Classification')
     agent_res = request.args.get('Agent')
     department_res = request.args.get('Department')
+
+    if not label_res and not classification_res and not agent_res and not department_res:
+        html = get_style()
+        html += get_header()
+        html += "No search terms provided. Please enter some search terms."
+        html += get_form()
+        html += get_footer()
+        response = make_response(html)
+        return response
 
     search_response = LuxQuery(DB_NAME).search(agt=agent_res, dep=department_res,
                                                classifier=classification_res, label=label_res)
@@ -46,7 +56,9 @@ def search():
         row_gen += f'<td>{row[4]}</td>'
         row_gen += '</tr>'
 
-    html = get_form()
+    html = get_style()
+    html += get_header()
+    html += get_form()
 
     html += f"""
     <table>
@@ -65,7 +77,6 @@ def search():
     """
 
     html += get_footer()
-    html += '</html>'
 
     response = make_response(html)
     return response

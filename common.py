@@ -16,10 +16,11 @@ def get_footer():
     html += '<hr>'
     html += "CPSC 419 Group #9 Solution.  "
     html += 'Today is ' + asctime(localtime()) + ''
+    html += '</html>'
     return html
 
 
-def get_form():
+def get_style():
     html = """<!DOCTYPE html>
     <html>
     <style>
@@ -37,7 +38,11 @@ def get_form():
       width: 350px;
       }
     </style>"""
-    html += get_header()
+    return html
+
+
+def get_form():
+    html = ""
     html += '<form action="search" method="get">'
     html += '<div><label>Label</label><input type="text" name="Label"></div>'
     html += '<div><label>Classification</label><input type="text" name="Classification"></div>'
