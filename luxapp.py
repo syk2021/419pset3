@@ -1,7 +1,8 @@
 from html import escape
 from flask import Flask, request, make_response, redirect, url_for
-from common import get_header, get_footer
-
+from common import get_header, get_footer, DB_NAME
+from query import LuxQuery, LuxDetailsQuery
+import json
 
 app = Flask(__name__)
 
@@ -45,7 +46,48 @@ def index():
 
 @app.route('/search', methods=['GET'])
 def search():
-    Label = request.args.get('Label')
-    Classification = request.args.get('Classification')
-    Agent = request.args.get('Agent')
-    Department = request.args.get('Department')
+    label_res = request.args.get('Label')
+    classification_res = request.args.get('Classification')
+    agent_res = request.args.get('Agent')
+    department_res = request.args.get('Department')
+
+    search_response = LuxQuery(DB_NAME).search(agt=agent_res, dep=department_res,
+                             classifier=classification_res, label=label_res)
+    search_response = json.loads(search_response)
+    print(search_response)
+    print(type(search_response))
+    response_data = search_response["data"]
+
+    row_gen = ""
+
+    for row in response_data:
+        row_gen += '<tr>'
+        # Label
+        row_gen += f'<td>{row[1]}</td>'
+        # Date
+        row_gen += f'<td>{row[2]}</td>'
+        # Agents
+        row_gen += f'<td>{row[3]}</td>'
+        # Classified As
+        row_gen += f'<td>{row[4]}</td>'
+        row_gen += '</tr>'
+
+    html = f"""
+    <table>
+        <thead>
+            <tr>
+                <th>Label</th>
+                <th>Date</th>
+                <th>Agents</th>
+                <th>Classified As</th>
+            </tr>
+        </thead>
+        <tbody>
+        {row_gen}
+        </tbody>
+    </table>
+    """
+
+    response = make_response(html)
+    return response
+
