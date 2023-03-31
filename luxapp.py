@@ -1,12 +1,14 @@
 from html import escape
 from flask import Flask, request, make_response, redirect, url_for
+from common import get_header
 
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET'])
 def index():
-    
+
     html = """<!DOCTYPE html>
     <html>
     <style>
@@ -20,6 +22,7 @@ def index():
         padding-right: 10px;
       }
     </style>"""
+    html += get_header()
     html += '<form action="search" method="get">'
     html += '<div><label>Label</label><input type="text" name="Label"></div>'
     html += '<div><label>Classification</label><input type="text" name="Classification"></div>'
@@ -27,8 +30,6 @@ def index():
     html += '<div><label>Department</label><input type="text" name="Department"></div>'
     html += '</form>'
     html += '</html>'
-    print(html)
 
     response = make_response(html)
     return response
-
