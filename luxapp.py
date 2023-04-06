@@ -42,12 +42,8 @@ def search():
     print(search_response)
     print(type(search_response))
     response_data = search_response["data"]
-    data = []
 
-    for row in response_data:
-        data.append(row[1:])
-
-    html = render_template('index.html', time=asctime(localtime()), table_data=data, prev_label=prev_label,
+    html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=prev_label,
                            prev_classifier=prev_classifier, prev_agent=prev_agent, prev_department=prev_department)
     response = make_response(html)
     response.set_cookie('prev_label', label_res)
@@ -57,7 +53,11 @@ def search():
 
     return response
 
+@app.route('/obj/<object_id>', methods=['GET'])
+def search_obj(object_id):
+    search_response = LuxDetailsQuery(DB_NAME).search(object_id)
+    print(search_response)
 
-@app.route('/obj/<object-id>', methods=['GET'])
-def search_obj():
-    pass
+    html = render_template('luxdetails.html')
+    response = make_response(html)
+    return response
