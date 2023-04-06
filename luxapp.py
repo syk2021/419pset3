@@ -47,7 +47,8 @@ def search():
     for row in response_data:
         data.append(row[1:])
 
-    html = render_template('index.html', time=asctime(localtime()), table_data=data, prev_label=prev_label, prev_classifier=prev_classifier, prev_agent=prev_agent, prev_department=prev_department)
+    html = render_template('index.html', time=asctime(localtime()), table_data=data, prev_label=prev_label,
+                           prev_classifier=prev_classifier, prev_agent=prev_agent, prev_department=prev_department)
     response = make_response(html)
     response.set_cookie('prev_label', label_res)
     response.set_cookie('prev_classifier', classification_res)
@@ -55,3 +56,8 @@ def search():
     response.set_cookie('prev_department', department_res)
 
     return response
+
+
+@app.route('/obj/<object-id>', methods=['GET'])
+def search_obj():
+    pass
