@@ -33,14 +33,13 @@
 
     <div className="input-form">
       <form action="search" method="get">
-        <div><label>Label</label><input type="text" name="Label" /></div>
+        <div><label>Label</label><input value="{{prev_label}}"type="text" name="Label" /></div>
         <div>
-          <label>Classification</label
-          ><input type="text" name="Classification" />
+          <label>Classification</label><input value="{{prev_classifier}}" type="text" name="Classification" />
         </div>
-        <div><label>Agent</label><input type="text" name="Agent" /></div>
+        <div><label>Agent</label><input value="{{prev_agent}}" type="text" name="Agent"/></div>
         <div>
-          <label>Department</label><input type="text" name="Department" />
+          <label>Department</label><input value="{{prev_department}}" type="text" name="Department" />
         </div>
         <div class="container">
           <input id="btn" type="submit" value="Search" />
@@ -49,9 +48,27 @@
     </div>
 
     <div className="results">
-      <hr />
-      <p id="results"></p>
-      <hr />
+      <table>
+        {% if table_data %}
+        <thead>
+          <tr>
+            <th>Label</th>
+            <th>Date</th>
+            <th>Agents</th>
+            <th>Classified As</th>
+          </tr>
+        </thead>
+        {% endif %}
+       <tbody>
+       {% for row in table_data %}
+       <tr>
+        {% for column in row %}
+          <td>{{column}}</td>
+        {% endfor %}
+       </tr>
+       {% endfor %}
+       </tbody>
+      </table>
     </div>
 
     <div className="footer">
