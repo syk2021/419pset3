@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YUAG Collection Search</title>
+    <style>
+      div {
+        margin-bottom: 10px;
+      }
+      label {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+        padding-right: 10px;
+      }
+      .container {
+        text-align: center;
+        width: 350px;
+      }
+    </style>
+    <!-- <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css') }}"
+    /> -->
+  </head>
+
+  <body>
+    <div className="heading">
+      <hr />
+      <h1>YUAG Collection Search</h1>
+      <hr />
+    </div>
+
+    <div className="input-form">
+      <form action="search" method="get">
+        <div><label>Label</label><input type="text" name="Label" /></div>
+        <div>
+          <label>Classification</label
+          ><input type="text" name="Classification" />
+        </div>
+        <div><label>Agent</label><input type="text" name="Agent" /></div>
+        <div>
+          <label>Department</label><input type="text" name="Department" />
+        </div>
+        <div class="container">
+          <input id="btn" type="submit" value="Search" />
+        </div>
+      </form>
+    </div>
+
+    <div className="results">
+      <hr />
+      <p id="results"></p>
+      <hr />
+    </div>
+
+    <div className="footer">
+      CPSC 419 Group #9 Solution
+      <br />
+      Today is: {{time}}
+      <hr />
+    </div>
+  </body>
+</html>

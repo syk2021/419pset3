@@ -1,8 +1,9 @@
 from html import escape
-from flask import Flask, request, make_response, redirect, url_for
+from flask import Flask, request, make_response, redirect, url_for, render_template
 from common import get_header, get_footer, get_form, get_style, DB_NAME
 from query import LuxQuery, LuxDetailsQuery
 import json
+from time import localtime, asctime, strftime
 
 app = Flask(__name__)
 
@@ -15,6 +16,7 @@ def index():
     html += get_form()
     html += get_footer()
 
+    html = render_template('index.html', time=asctime(localtime()))
     response = make_response(html)
     return response
 
