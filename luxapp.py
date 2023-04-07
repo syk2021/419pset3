@@ -39,6 +39,18 @@ def search():
                                                classifier=classification_search, label=label_search)
     search_response = json.loads(search_response)
     response_data = search_response["data"]
+    print(response_data)
+
+    for obj in response_data:
+        if obj[3]:
+            obj[3] = obj[3].split(',')
+        else:
+            obj[3] = [obj[3]]
+        if obj[4]:
+            obj[4] = obj[4].split(',')
+        else:
+            obj[4] = [obj[4]]
+        print(obj)
 
     html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=label_search,
                            prev_classifier=classification_search, prev_agent=agent_search,
