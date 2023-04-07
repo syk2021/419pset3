@@ -30,25 +30,13 @@ def search():
 
     # else, load cookie values inside to the variables
     if not (label_search or classification_search or agent_search or department_search):
-        label_search = request.cookies.get('prev_label')
-        if not label_search:
-            label_search = ""
-        classification_search = request.cookies.get('prev_classifier')
-        if not classification_search:
-            classification_search = ""
-        agent_search = request.cookies.get('prev_agent')
-        if not agent_search:
-            agent_search = ""
-        department_search = request.cookies.get('prev_department')
-        if not department_search:
-            department_search = ""
+        label_search = request.cookies.get('prev_label', "")
+        classification_search = request.cookies.get('prev_classifier', "")
+        agent_search = request.cookies.get('prev_agent', "")
+        department_search = request.cookies.get('prev_department', "")
 
-    if request.cookies.get('previous_search') == "True":   
-        search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
-                                                   classifier=classification_search, label=label_search)
-    else:
-        search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
-                                                   classifier=classification_search, label=label_search)
+    search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
+                                               classifier=classification_search, label=label_search)
     search_response = json.loads(search_response)
     response_data = search_response["data"]
 
@@ -65,19 +53,20 @@ def search():
         print(request.cookies.get('prev_agent'))
     if department_search:
         response.set_cookie('prev_department', department_search)
-    
-    response.set_cookie('previous_search', "False")
 
     return response
+
 
 @app.errorhandler(404)
 def page_not_found(e):
     message = e.description
     return render_template("error.html", message=message), 404
 
+
 @app.route('/obj/', methods=["GET"])
 def missing_obj():
     abort(404, description="missing object id.")
+
 
 @app.route('/obj/<object_id>', methods=['GET'])
 def search_obj(object_id):
@@ -91,7 +80,4 @@ def search_obj(object_id):
             'luxdetails.html', object_id=object_id, search_response=search_response)
         response = make_response(html)
 
-        # set previous_search as true
-        response.set_cookie('previous_search', "True")
         return response
-

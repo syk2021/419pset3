@@ -2,37 +2,11 @@
 <html>
   <head>
     <title>YUAG Collection Search</title>
-    <style>
-      div {
-        margin-bottom: 10px;
-      }
-      label {
-        display: inline-block;
-        width: 150px;
-        text-align: right;
-        padding-right: 10px;
-      }
-      .container {
-        text-align: center;
-        width: 350px;
-      }
-      table,
-      td,
-      th {
-        padding: 5px;
-      }
-      tr {
-        border-bottom: 1px solid gray;
-      }
-      tr:hover {
-        background-color: lightgray;
-      }
-    </style>
-    <!-- <link
+    <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='style.css') }}"
-    /> -->
+    />
   </head>
 
   <body>
@@ -50,11 +24,7 @@
         </div>
         <div>
           <label>Classification</label
-          ><input
-            value="{{prev_classifier}}"
-            type="text"
-            name="c"
-          />
+          ><input value="{{prev_classifier}}" type="text" name="c" />
         </div>
         <div>
           <label>Agent</label
@@ -71,7 +41,7 @@
     </div>
 
     <div className="results">
-      <table>
+      <table id="data-table">
         {% if table_data %}
         <thead>
           <tr>
@@ -95,6 +65,7 @@
     </div>
 
     <div className="footer">
+      <hr />
       CPSC 419 Group #9 Solution
       <br />
       Today is: {{time}}
