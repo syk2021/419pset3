@@ -11,9 +11,30 @@
             </tr>
         </thead>
         <tbody>
-            <td>{{ search_response["accession_no"] }}</td>
-            <td>{{ search_response["date"] }}</td>
-            <td>{{ search_response["place"] }}</td>
+            <td>{{ search_response['object']['accession_no'] }}</td>
+            <td>{{ search_response['object']['date'] }}</td>
+            <td>{{ search_response['object']['place'] }}</td>
+        </tbody>
+    </table>
+
+    <h2>Label</h2>
+    <div>{{ search_response['object']['label']}}</div>
+
+    <h2>Produced By:</h2>
+    <table>
+        <thead>
+            <tr>
+                {% for column in search_response['columns_produced_by'] %}
+                    <th>{{column}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for agent_info in search_response['agents'][0]%}
+                <td>{{agent_info }}</td>
+            {% endfor %}
+            </tr>
         </tbody>
     </table>
 </html>

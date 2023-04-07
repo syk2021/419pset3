@@ -59,7 +59,7 @@ def search_obj(object_id):
     search_response = json.loads(search_response)
     print(type(search_response))
     print(search_response)
-    print(search_response["accession_no"])
+    print(search_response['object']['accession_no'])
     html = render_template('luxdetails.html', object_id=object_id, search_response=search_response)
     response = make_response(html)
     return response
