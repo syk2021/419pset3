@@ -16,6 +16,10 @@
       <hr />
     </div>
 
+    {% if no_search_terms %}
+      <p>No search terms provided. Please enter some search terms.</p>
+    {% endif %}
+
     <div className="input-form">
       <form action="search" method="get">
         <div>
@@ -40,6 +44,7 @@
       </form>
     </div>
 
+    {% if not no_search_terms %}
     <div className="results">
       <table id="data-table">
         {% if table_data %}
@@ -63,6 +68,7 @@
         </tbody>
       </table>
     </div>
+    {% endif %}
 
     <div className="footer">
       <hr />

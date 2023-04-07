@@ -18,6 +18,7 @@ def index():
 
 @app.route('/search', methods=['GET'])
 def search():
+    no_search_terms = False
     label_search = ""
     classification_search = ""
     agent_search = ""
@@ -36,13 +37,18 @@ def search():
         agent_search = request.cookies.get('prev_agent', "")
         department_search = request.cookies.get('prev_department', "")
 
+    # if no search terms provided
+    if not label_search and not classification_search and not agent_search and not department_search:
+        no_search_terms = True
+
     search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
                                                classifier=classification_search, label=label_search)
     search_response = json.loads(search_response)
     response_data = search_response["data"]
 
     html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=label_search,
-                           prev_classifier=classification_search, prev_agent=agent_search, prev_department=department_search)
+                           prev_classifier=classification_search, prev_agent=agent_search, 
+                           prev_department=department_search, no_search_terms=no_search_terms)
     response = make_response(html)
 
     if label_search:
