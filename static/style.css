@@ -34,7 +34,7 @@ tr:hover {
 
 #data-table td,
 #data-table th {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 5px;
 }
 
@@ -48,8 +48,8 @@ tr:hover {
 }
 #data-table th {
   padding: 5px;
-  text-align: left;
+  text-align: center;
   background-color: gray;
-  color: black;
+  color: white;
   cursor: default;
 }

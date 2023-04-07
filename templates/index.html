@@ -17,7 +17,7 @@
     </div>
 
     {% if no_search_terms %}
-      <p>No search terms provided. Please enter some search terms.</p>
+    <p>No search terms provided. Please enter some search terms.</p>
     {% endif %}
 
     <div className="input-form">
@@ -62,11 +62,14 @@
           <tr onclick="location.href='obj/{{row[0]}}';" style="cursor: pointer">
             <td>{{row[1]}}</td>
             <td>{{row[2]}}</td>
-            <td>{{row[3]}}</td>
-              <!-- {% for classifier in row[4] %}
-                <td>{{classifier}}</td>
-                <br/>
-              {% endfor %} -->
+            <td>
+              {% for agent in row[3] %} {{agent}} <br />
+              {% endfor %}
+            </td>
+            <td>
+              {% for classifier in row[4] %} {{classifier}} <br />
+              {% endfor %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>
