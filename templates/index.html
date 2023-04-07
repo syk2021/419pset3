@@ -16,6 +16,17 @@
         text-align: center;
         width: 350px;
       }
+      table,
+      td,
+      th {
+        padding: 5px;
+      }
+      tr {
+        border-bottom: 1px solid gray;
+      }
+      tr:hover {
+        background-color: lightgray;
+      }
     </style>
     <!-- <link
       rel="stylesheet"
@@ -35,23 +46,23 @@
       <form action="search" method="get">
         <div>
           <label>Label</label
-          ><input value="{{prev_label}}" type="text" name="Label" />
+          ><input value="{{prev_label}}" type="text" name="label" />
         </div>
         <div>
           <label>Classification</label
           ><input
             value="{{prev_classifier}}"
             type="text"
-            name="Classification"
+            name="classification"
           />
         </div>
         <div>
           <label>Agent</label
-          ><input value="{{prev_agent}}" type="text" name="Agent" />
+          ><input value="{{prev_agent}}" type="text" name="agent" />
         </div>
         <div>
           <label>Department</label
-          ><input value="{{prev_department}}" type="text" name="Department" />
+          ><input value="{{prev_department}}" type="text" name="department" />
         </div>
         <div class="container">
           <input id="btn" type="submit" value="Search" />
@@ -71,15 +82,15 @@
           </tr>
         </thead>
         {% endif %}
-       <tbody>
-       {% for row in table_data %}
-       <tr onclick="location.href='obj/{{row[0]}}';" style="cursor: pointer">
-        {% for i in range(1, row|length) %}
-          <td>{{row[i]}}</td>
-        {% endfor %}
-       </tr>
-       {% endfor %}
-       </tbody>
+        <tbody>
+          {% for row in table_data %}
+          <tr onclick="location.href='obj/{{row[0]}}';" style="cursor: pointer">
+            {% for i in range(1, row|length) %}
+            <td>{{row[i]}}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
     </div>
 
