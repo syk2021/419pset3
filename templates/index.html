@@ -10,7 +10,7 @@
   </head>
 
   <body>
-    <div className="heading">
+    <div class="heading">
       <hr />
       <h1>YUAG Collection Search</h1>
       <hr />
@@ -20,33 +20,33 @@
     <p>No search terms provided. Please enter some search terms.</p>
     {% endif %}
 
-    <div className="input-form">
+    <div class="input-form">
       <form action="search" method="get">
-        <div>
-          <label>Label</label
+        <div class="form-field">
+          <label class="label-text">Label</label
           ><input value="{{prev_label}}" type="text" name="l" />
         </div>
-        <div>
-          <label>Classification</label
+        <div class="form-field">
+          <label class="label-text">Classification</label
           ><input value="{{prev_classifier}}" type="text" name="c" />
         </div>
-        <div>
-          <label>Agent</label
+        <div class="form-field">
+          <label class="label-text">Agent</label
           ><input value="{{prev_agent}}" type="text" name="a" />
         </div>
-        <div>
-          <label>Department</label
+        <div class="form-field">
+          <label class="label-text">Department</label
           ><input value="{{prev_department}}" type="text" name="d" />
         </div>
-        <div class="container">
+        <div class="submit-btn">
           <input id="btn" type="submit" value="Search" />
         </div>
       </form>
     </div>
 
     {% if not no_search_terms %}
-    <div className="results">
-      <table id="data-table">
+    <div class="results">
+      <table class="data-table">
         {% if table_data %}
         <thead>
           <tr>
@@ -77,7 +77,7 @@
     </div>
     {% endif %}
 
-    <div className="footer">
+    <div class="footer">
       <hr />
       CPSC 419 Group #9 Solution
       <br />
