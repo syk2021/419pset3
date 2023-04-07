@@ -10,53 +10,18 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def index():
-
-    prev_label = request.cookies.get('prev_label')
-    if not prev_label:
-        prev_label = ""
-    prev_classifier = request.cookies.get('prev_classifier')
-    if not prev_classifier:
-        prev_classifier = ""
-    prev_agent = request.cookies.get('prev_agent')
-    if not prev_agent:
-        prev_agent = ""
-    prev_department = request.cookies.get('prev_department')
-    if not prev_department:
-        prev_department = ""
-
-    label_res = request.args.get('Label')
-    classification_res = request.args.get('Classification')
-    agent_res = request.args.get('Agent')
-    department_res = request.args.get('Department')
-
-    response_data = []
-
-    if prev_label or prev_classifier or prev_agent or prev_department:
-        search_response = LuxQuery(DB_NAME).search(agt=prev_agent, dep=prev_department,
-                                                   classifier=prev_classifier, label=prev_label)
-        search_response = json.loads(search_response)
-        print(search_response)
-        print(type(search_response))
-        response_data = search_response["data"]
-
-    html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=prev_label,
-                           prev_classifier=prev_classifier, prev_agent=prev_agent, prev_department=prev_department)
+    html = render_template('index.html', time=asctime(localtime()))
     response = make_response(html)
-
-    if label_res:
-        response.set_cookie('prev_label', label_res)
-    if classification_res:
-        response.set_cookie('prev_classifier', classification_res)
-    if agent_res:
-        response.set_cookie('prev_agent', agent_res)
-    if department_res:
-        response.set_cookie('prev_department', department_res)
-
     return response
 
 
 @app.route('/search', methods=['GET'])
 def search():
+    label_res = request.args.get('Label')
+    classification_res = request.args.get('Classification')
+    agent_res = request.args.get('Agent')
+    department_res = request.args.get('Department')
+
     # get cookie values
     prev_label = request.cookies.get('prev_label')
     if not prev_label:
@@ -71,24 +36,13 @@ def search():
     if not prev_department:
         prev_department = ""
 
-    label_res = request.args.get('Label')
-    classification_res = request.args.get('Classification')
-    agent_res = request.args.get('Agent')
-    department_res = request.args.get('Department')
-
-    search_response = LuxQuery(DB_NAME).search(agt=agent_res, dep=department_res,
-                                               classifier=classification_res, label=label_res)
-
-    # if prev_label or prev_classifier or prev_agent or prev_department:
-    #     search_response = LuxQuery(DB_NAME).search(agt=prev_agent, dep=prev_department,
-    #                                                classifier=prev_classifier, label=prev_label)
-    # else:
-    #     search_response = LuxQuery(DB_NAME).search(agt=agent_res, dep=department_res,
-    #                                                classifier=classification_res, label=label_res)
-
+    if request.cookies.get('previous_search') == "True":   
+        search_response = LuxQuery(DB_NAME).search(agt=prev_agent, dep=prev_department,
+                                                   classifier=prev_classifier, label=prev_label)
+    else:
+        search_response = LuxQuery(DB_NAME).search(agt=agent_res, dep=department_res,
+                                                   classifier=classification_res, label=label_res)
     search_response = json.loads(search_response)
-    print(search_response)
-    print(type(search_response))
     response_data = search_response["data"]
 
     html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=prev_label,
@@ -101,8 +55,10 @@ def search():
         response.set_cookie('prev_classifier', classification_res)
     if agent_res:
         response.set_cookie('prev_agent', agent_res)
+        print(request.cookies.get('prev_agent'))
     if department_res:
         response.set_cookie('prev_department', department_res)
+    response.set_cookie('previous_search', "False")
 
     return response
 
@@ -111,10 +67,10 @@ def search():
 def search_obj(object_id):
     search_response = LuxDetailsQuery(DB_NAME).search(object_id)
     search_response = json.loads(search_response)
-    print(type(search_response))
-    print(search_response)
-    print(search_response['object']['accession_no'])
     html = render_template(
         'luxdetails.html', object_id=object_id, search_response=search_response)
     response = make_response(html)
+
+    # set previous_search as true
+    response.set_cookie('previous_search', "True")
     return response
