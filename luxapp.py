@@ -1,9 +1,10 @@
 
 from flask import Flask, request, make_response, render_template, abort
-from common import DB_NAME
 from query import LuxQuery, LuxDetailsQuery, NoSearchResultsError
 import json
 from time import localtime, asctime
+
+DB_NAME = "./lux.sqlite"
 
 app = Flask(__name__)
 
