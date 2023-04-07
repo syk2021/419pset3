@@ -12,3 +12,7 @@ Sophia Kang contribution:
 
 Phuc Duong contribution:
 
+### Pylint information to graders
+- luxapp.py: We are getting "Access to a protected member _exit of a client class" which is the result of using the os._exit function to exit out of our Flask application if there is a sqlite3 OperationalError with the given database filename. Using sys.exit(1) does not work in this case, so this was an unavoidable pylint error.
+- query.py: we have a pylint error that says too many local variables, but we only exceeded the limit by 4 and have tried to eliminate local variables without making the code unreadable. There is an error with the number of arguments from LuxDetailsQuery, because we inherit from the Query class, but we think this is negligible for the most part. 
+- runserver.py: We get 2 broad-exception-caught errors. However, this is extended behavior as we are trying to exit the program safely we want to try to catch a general exception just in case. We have specific exception already where neccessary.
