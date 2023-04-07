@@ -1,15 +1,12 @@
 """Code for flask application."""
+
 import json
-from time import localtime, asctime
-from flask import Flask, request, make_response, render_template, abort
-from query import LuxQuery, LuxDetailsQuery, NoSearchResultsError
-from sqlite3 import OperationalError
-import sys
 import os
 
-
-class ServerShutdownException(Exception):
-    pass
+from time import localtime, asctime
+from sqlite3 import OperationalError
+from flask import Flask, request, make_response, render_template, abort
+from query import LuxQuery, LuxDetailsQuery, NoSearchResultsError
 
 
 DB_NAME = "./lux.sqlite"
@@ -49,7 +46,8 @@ def search():
     # query the database and select data that we need
     try:
         search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
-                                                   classifier=classification_search, label=label_search)
+                                                   classifier=classification_search,
+                                                   label=label_search)
     except OperationalError:
         # if can not query database, then exits with 1
         print(f"Database {DB_NAME} unable to open")
@@ -111,7 +109,8 @@ def search_obj(object_id):
     # if no exception, then render_template with luxdetails
     search_response = json.loads(search_response)
     html = render_template(
-        'luxdetails.html', time=asctime(localtime()), object_id=object_id, search_response=search_response)
+        'luxdetails.html', time=asctime(localtime()), object_id=object_id,
+        search_response=search_response)
     response = make_response(html)
 
     return response
