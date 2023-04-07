@@ -18,11 +18,6 @@ def index():
 
 @app.route('/search', methods=['GET'])
 def search():
-    no_search_terms = False
-    label_search = ""
-    classification_search = ""
-    agent_search = ""
-    department_search = ""
 
     # if any of the 4 are not null, forget about cookies, and update cookies at the end
     label_search = request.args.get('l', "")
@@ -38,8 +33,8 @@ def search():
         department_search = request.cookies.get('prev_department', "")
 
     # if no search terms provided
-    if not label_search and not classification_search and not agent_search and not department_search:
-        no_search_terms = True
+    no_search_terms = not (
+        label_search and classification_search and agent_search and department_search)
 
     search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
                                                classifier=classification_search, label=label_search)
@@ -47,19 +42,14 @@ def search():
     response_data = search_response["data"]
 
     html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=label_search,
-                           prev_classifier=classification_search, prev_agent=agent_search, 
+                           prev_classifier=classification_search, prev_agent=agent_search,
                            prev_department=department_search, no_search_terms=no_search_terms)
     response = make_response(html)
 
-    if label_search:
-        response.set_cookie('prev_label', label_search)
-    if classification_search:
-        response.set_cookie('prev_classifier', classification_search)
-    if agent_search:
-        response.set_cookie('prev_agent', agent_search)
-        print(request.cookies.get('prev_agent'))
-    if department_search:
-        response.set_cookie('prev_department', department_search)
+    response.set_cookie('prev_label', label_search)
+    response.set_cookie('prev_classifier', classification_search)
+    response.set_cookie('prev_agent', agent_search)
+    response.set_cookie('prev_department', department_search)
 
     return response
 
