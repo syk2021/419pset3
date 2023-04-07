@@ -33,7 +33,8 @@ def search():
     department_search = request.args.get('d', "")
 
     # else, load cookie values inside to the variables
-    if not (label_search or classification_search or agent_search or department_search):
+    if not (label_search or classification_search or
+            agent_search or department_search) and request.cookies.get("previous_search") == "True":
         label_search = request.cookies.get('prev_label', "")
         classification_search = request.cookies.get('prev_classifier', "")
         agent_search = request.cookies.get('prev_agent', "")
@@ -112,5 +113,7 @@ def search_obj(object_id):
         'luxdetails.html', time=asctime(localtime()), object_id=object_id,
         search_response=search_response)
     response = make_response(html)
+
+    response.set_cookie("previous_search", "True")
 
     return response
