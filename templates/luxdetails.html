@@ -37,4 +37,31 @@
             </tr>
         </tbody>
     </table>
+
+    <h2>Classified As</h2>
+    <ul>
+        {% for classifier in search_response['object']['classifier'] %}
+        <li>{{classifier}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Information</h2>
+    <table>
+        <thead>
+            <tr>
+                {% for column in search_response['columns_information'] %}
+                    <th>{{column}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+                {% for i in range(search_response['object']['ref_type']|length) %} 
+                <tr>
+                    <td>{{ search_response['object']['ref_type'][i] }}</td>
+                    <td>{{ search_response['object']['ref_content'][i] }}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+
+    </table>
 </html>
