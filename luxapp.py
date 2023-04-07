@@ -3,6 +3,14 @@ import json
 from time import localtime, asctime
 from flask import Flask, request, make_response, render_template, abort
 from query import LuxQuery, LuxDetailsQuery, NoSearchResultsError
+from sqlite3 import OperationalError
+import sys
+import os
+
+
+class ServerShutdownException(Exception):
+    pass
+
 
 DB_NAME = "./lux.sqlite"
 
@@ -20,6 +28,7 @@ def index():
 @app.route('/search', methods=['GET'])
 def search():
     """Function for the '/search' route."""
+
     # if any of the 4 are not null, forget about cookies, and update cookies at the end
     label_search = request.args.get('l', "")
     classification_search = request.args.get('c', "")
@@ -38,21 +47,21 @@ def search():
         label_search or classification_search or agent_search or department_search)
 
     # query the database and select data that we need
-    search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
-                                               classifier=classification_search, label=label_search)
+    try:
+        search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
+                                                   classifier=classification_search, label=label_search)
+    except OperationalError:
+        # if can not query database, then exits with 1
+        print(f"Database {DB_NAME} unable to open")
+        os._exit(1)
+
     search_response = json.loads(search_response)
     response_data = search_response["data"]
 
     # formatting for multiple agents and classifiers
     for obj in response_data:
-        if obj[3]:
-            obj[3] = obj[3].split(',')
-        else:
-            obj[3] = [obj[3]]
-        if obj[4]:
-            obj[4] = obj[4].split(',')
-        else:
-            obj[4] = [obj[4]]
+        obj[3] = obj[3].split(',') if obj[3] else [obj[3]]
+        obj[4] = obj[4].split(',') if obj[4] else [obj[4]]
 
     # render template
     html = render_template('index.html', time=asctime(localtime()), table_data=response_data,
@@ -73,6 +82,7 @@ def search():
 @app.errorhandler(404)
 def page_not_found(error_message):
     """Function for 404 error handler."""
+
     message = error_message.description
     return render_template("error.html", message=message), 404
 
@@ -80,17 +90,23 @@ def page_not_found(error_message):
 @app.route('/obj/', methods=["GET"])
 def missing_obj():
     """If object id not provided, abort with 404 and message."""
+
     abort(404, description="missing object id.")
 
 
 @app.route('/obj/<object_id>', methods=['GET'])
 def search_obj(object_id):
     """Function for the '/obj/<object_id>' route."""
+
     try:
         search_response = LuxDetailsQuery(DB_NAME).search(object_id)
     except NoSearchResultsError:
         # if no search results, abort with 404 and message
         return abort(404, description=f"no object with id {object_id} exists.")
+    except OperationalError:
+        # if can not query database, then exits with 1
+        print(f"Database {DB_NAME} unable to open")
+        os._exit(1)
 
     # if no exception, then render_template with luxdetails
     search_response = json.loads(search_response)
