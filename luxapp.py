@@ -1,7 +1,7 @@
 from html import escape
-from flask import Flask, request, make_response, redirect, url_for, render_template
+from flask import Flask, request, make_response, redirect, url_for, render_template, abort
 from common import get_header, get_footer, get_form, get_style, DB_NAME
-from query import LuxQuery, LuxDetailsQuery
+from query import LuxQuery, LuxDetailsQuery, NoSearchResultsError
 import json
 from time import localtime, asctime, strftime
 
@@ -17,10 +17,10 @@ def index():
 
 @app.route('/search', methods=['GET'])
 def search():
-    label_res = request.args.get('Label')
-    classification_res = request.args.get('Classification')
-    agent_res = request.args.get('Agent')
-    department_res = request.args.get('Department')
+    label_res = request.args.get('l')
+    classification_res = request.args.get('c')
+    agent_res = request.args.get('a')
+    department_res = request.args.get('d')
 
     # get cookie values
     prev_label = request.cookies.get('prev_label')
@@ -62,15 +62,27 @@ def search():
 
     return response
 
+@app.errorhandler(404)
+def page_not_found(e):
+    message = e.description
+    return render_template("error.html", message=message), 404
 
-@app.route('/obj/<int:object_id>', methods=['GET'])
+@app.route('/obj/', methods=["GET"])
+def missing_obj():
+    abort(404, description="missing object id.")
+    
+@app.route('/obj/<object_id>', methods=['GET'])
 def search_obj(object_id):
-    search_response = LuxDetailsQuery(DB_NAME).search(object_id)
-    search_response = json.loads(search_response)
-    html = render_template(
-        'luxdetails.html', object_id=object_id, search_response=search_response)
-    response = make_response(html)
+    try:
+        search_response = LuxDetailsQuery(DB_NAME).search(object_id)
+    except NoSearchResultsError:
+        abort(404, description=f"no object with id {object_id} exists.")
+    else:
+        search_response = json.loads(search_response)
+        html = render_template(
+            'luxdetails.html', object_id=object_id, search_response=search_response)
+        response = make_response(html)
 
-    # set previous_search as true
-    response.set_cookie('previous_search', "True")
-    return response
+        # set previous_search as true
+        response.set_cookie('previous_search', "True")
+        return response
