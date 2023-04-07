@@ -1,4 +1,4 @@
-
+"""Code for running server."""
 import argparse
 import sys
 from luxapp import app
