@@ -39,7 +39,6 @@ def search():
                                                classifier=classification_search, label=label_search)
     search_response = json.loads(search_response)
     response_data = search_response["data"]
-    print(response_data)
 
     for obj in response_data:
         if obj[3]:
