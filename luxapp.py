@@ -111,7 +111,7 @@ def search_obj(object_id):
     # if no exception, then render_template with luxdetails
     search_response = json.loads(search_response)
     html = render_template(
-        'luxdetails.html', object_id=object_id, search_response=search_response)
+        'luxdetails.html', time=asctime(localtime()), object_id=object_id, search_response=search_response)
     response = make_response(html)
 
     return response
