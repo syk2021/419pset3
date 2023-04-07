@@ -24,10 +24,10 @@ def search():
     department_search = ""
 
     # if any of the 4 are not null, forget about cookies, and update cookies at the end
-    label_search = request.args.get('l')
-    classification_search = request.args.get('c')
+    label_search = request.args.get('l', "")
+    classification_search = request.args.get('c', "")
     agent_search = request.args.get('a')
-    department_search = request.args.get('d')
+    department_search = request.args.get('d', "")
 
     # else, load cookie values inside to the variables
     if not (label_search or classification_search or agent_search or department_search):
