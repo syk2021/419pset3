@@ -3,7 +3,7 @@
 
 ### Due Friday April 7 11:59 PM NHT (New Haven Time)
 
-### CPSC 419 PSET 2 PARTNER GROUP 9
+### CPSC 419 PSET 3 PARTNER GROUP 9
 
 Group members: Sophia Kang (yk575), Phuc Duong (phd24), both enrolled in CPSC 419.
 
@@ -12,8 +12,10 @@ Sophia Kang contribution:
 - Writing Jinja statements in index.html
 - Writing HTML for error.html, index.html, luxdetails.html
 - Creating /search and /obj/<object_id> routes and adding functionality to search database and parse/return data to the html file.
+- Exception handling for no search results, adding 404 handler
 - Error Handling: Bad Server, Bad Client, Invalid Search Parameters, Missing "obj_id" and adding the error pages
 - Saving and loading cookies to enable user to go back to previous searches and have the form filled with the information that they had before.
+- Writing README.md
 
 Phuc Duong contribution:
 - Setting up runserver.py
@@ -22,6 +24,17 @@ Phuc Duong contribution:
 - Creating /search and /obj/<object_id> routes and adding functionality to search database and parse/return data to the html file.
 - Error Handling: Catching exception for unable to open data base
 - Saving and loading cookies to enable user to go back to previous searches and have the form filled with the information that they had before.
+- Writing README.md
+
+### A description of help from other people & sources of information from not people
+- ULA office hours, Google searches
+
+### Time spent doing assignment
+- 11 hours
+
+### Assessment of the assignment
+- What we learned: This assignment helped us learn incorporating Jinja into HTML, creating a server, writing in HTML and working with Flask. We learned how to set and retrieve cookies (and inspect them in Chrome) and set up a 404 error handler in Flask.
+- Suggestions for improvement: The demo video posted in Ed Discussion was very helpful in understanding what was expected of this assignment. No other suggestions in particular.
 
 ### Pylint information to graders
 - luxapp.py: We are getting "Access to a protected member _exit of a client class" which is the result of using the os._exit function to exit out of our Flask application if there is a sqlite3 OperationalError with the given database filename. Using sys.exit(1) does not work in this case, so this was an unavoidable pylint error.
