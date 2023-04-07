@@ -36,6 +36,7 @@ def search():
     agent_res = request.args.get('Agent')
     department_res = request.args.get('Department')
 
+    
     search_response = LuxQuery(DB_NAME).search(agt=agent_res, dep=department_res,
                                                classifier=classification_res, label=label_res)
     search_response = json.loads(search_response)
@@ -46,10 +47,15 @@ def search():
     html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=prev_label,
                            prev_classifier=prev_classifier, prev_agent=prev_agent, prev_department=prev_department)
     response = make_response(html)
-    response.set_cookie('prev_label', label_res)
-    response.set_cookie('prev_classifier', classification_res)
-    response.set_cookie('prev_agent', agent_res)
-    response.set_cookie('prev_department', department_res)
+    
+    if label_res:
+        response.set_cookie('prev_label', label_res)
+    if classification_res:
+        response.set_cookie('prev_classifier', classification_res)
+    if agent_res:
+        response.set_cookie('prev_agent', agent_res)
+    if department_res:
+        response.set_cookie('prev_department', department_res)
 
     return response
 
