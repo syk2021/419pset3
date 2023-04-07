@@ -1,9 +1,9 @@
-from html import escape
-from flask import Flask, request, make_response, redirect, url_for, render_template, abort
-from common import get_header, get_footer, get_form, get_style, DB_NAME
+
+from flask import Flask, request, make_response, render_template, abort
+from common import DB_NAME
 from query import LuxQuery, LuxDetailsQuery, NoSearchResultsError
 import json
-from time import localtime, asctime, strftime
+from time import localtime, asctime
 
 app = Flask(__name__)
 
@@ -17,47 +17,55 @@ def index():
 
 @app.route('/search', methods=['GET'])
 def search():
-    label_res = request.args.get('l')
-    classification_res = request.args.get('c')
-    agent_res = request.args.get('a')
-    department_res = request.args.get('d')
+    label_search = ""
+    classification_search = ""
+    agent_search = ""
+    department_search = ""
 
-    # get cookie values
-    prev_label = request.cookies.get('prev_label')
-    if not prev_label:
-        prev_label = ""
-    prev_classifier = request.cookies.get('prev_classifier')
-    if not prev_classifier:
-        prev_classifier = ""
-    prev_agent = request.cookies.get('prev_agent')
-    if not prev_agent:
-        prev_agent = ""
-    prev_department = request.cookies.get('prev_department')
-    if not prev_department:
-        prev_department = ""
+    # if any of the 4 are not null, forget about cookies, and update cookies at the end
+    label_search = request.args.get('l')
+    classification_search = request.args.get('c')
+    agent_search = request.args.get('a')
+    department_search = request.args.get('d')
+
+    # else, load cookie values inside to the variables
+    if not (label_search or classification_search or agent_search or department_search):
+        label_search = request.cookies.get('prev_label')
+        if not label_search:
+            label_search = ""
+        classification_search = request.cookies.get('prev_classifier')
+        if not classification_search:
+            classification_search = ""
+        agent_search = request.cookies.get('prev_agent')
+        if not agent_search:
+            agent_search = ""
+        department_search = request.cookies.get('prev_department')
+        if not department_search:
+            department_search = ""
 
     if request.cookies.get('previous_search') == "True":   
-        search_response = LuxQuery(DB_NAME).search(agt=prev_agent, dep=prev_department,
-                                                   classifier=prev_classifier, label=prev_label)
+        search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
+                                                   classifier=classification_search, label=label_search)
     else:
-        search_response = LuxQuery(DB_NAME).search(agt=agent_res, dep=department_res,
-                                                   classifier=classification_res, label=label_res)
+        search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
+                                                   classifier=classification_search, label=label_search)
     search_response = json.loads(search_response)
     response_data = search_response["data"]
 
-    html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=prev_label,
-                           prev_classifier=prev_classifier, prev_agent=prev_agent, prev_department=prev_department)
+    html = render_template('index.html', time=asctime(localtime()), table_data=response_data, prev_label=label_search,
+                           prev_classifier=classification_search, prev_agent=agent_search, prev_department=department_search)
     response = make_response(html)
 
-    if label_res:
-        response.set_cookie('prev_label', label_res)
-    if classification_res:
-        response.set_cookie('prev_classifier', classification_res)
-    if agent_res:
-        response.set_cookie('prev_agent', agent_res)
+    if label_search:
+        response.set_cookie('prev_label', label_search)
+    if classification_search:
+        response.set_cookie('prev_classifier', classification_search)
+    if agent_search:
+        response.set_cookie('prev_agent', agent_search)
         print(request.cookies.get('prev_agent'))
-    if department_res:
-        response.set_cookie('prev_department', department_res)
+    if department_search:
+        response.set_cookie('prev_department', department_search)
+    
     response.set_cookie('previous_search', "False")
 
     return response
@@ -70,7 +78,7 @@ def page_not_found(e):
 @app.route('/obj/', methods=["GET"])
 def missing_obj():
     abort(404, description="missing object id.")
-    
+
 @app.route('/obj/<object_id>', methods=['GET'])
 def search_obj(object_id):
     try:
@@ -86,3 +94,4 @@ def search_obj(object_id):
         # set previous_search as true
         response.set_cookie('previous_search', "True")
         return response
+
