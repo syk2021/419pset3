@@ -9,6 +9,17 @@ Group members: Sophia Kang (yk575), Phuc Duong (phd24), both enrolled in CPSC 41
 
 ### Contributions
 Sophia Kang contribution:
+- Writing Jinja statements in index.html
+- Writing HTML for error.html, index.html, luxdetails.html
+- Creating /search and /obj/<object_id> routes and adding functionality to search database and parse/return data to the html file.
+- Error Handling: Bad Server, Bad Client, Invalid Search Parameters, Missing "obj_id" and adding the error pages
+- Saving and loading cookies to enable user to go back to previous searches and have the form filled with the information that they had before.
 
 Phuc Duong contribution:
+- Setting up runserver.py
+- Writing HTML for index.html
+- Added CSS styling for table and form-field
+- Creating /search and /obj/<object_id> routes and adding functionality to search database and parse/return data to the html file.
+- Error Handling: Catching exception for unable to open data base
+- Saving and loading cookies to enable user to go back to previous searches and have the form filled with the information that they had before.
 
