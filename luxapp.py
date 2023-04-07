@@ -18,7 +18,6 @@ def index():
 
 @app.route('/search', methods=['GET'])
 def search():
-
     # if any of the 4 are not null, forget about cookies, and update cookies at the end
     label_search = request.args.get('l', "")
     classification_search = request.args.get('c', "")
@@ -34,7 +33,7 @@ def search():
 
     # if no search terms provided
     no_search_terms = not (
-        label_search and classification_search and agent_search and department_search)
+        label_search or classification_search or agent_search or department_search)
 
     search_response = LuxQuery(DB_NAME).search(agt=agent_search, dep=department_search,
                                                classifier=classification_search, label=label_search)
