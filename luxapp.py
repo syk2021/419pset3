@@ -53,11 +53,13 @@ def search():
 
     return response
 
-@app.route('/obj/<object_id>', methods=['GET'])
+@app.route('/obj/<int:object_id>', methods=['GET'])
 def search_obj(object_id):
     search_response = LuxDetailsQuery(DB_NAME).search(object_id)
+    search_response = json.loads(search_response)
+    print(type(search_response))
     print(search_response)
-
-    html = render_template('luxdetails.html')
+    print(search_response["accession_no"])
+    html = render_template('luxdetails.html', object_id=object_id, search_response=search_response)
     response = make_response(html)
     return response

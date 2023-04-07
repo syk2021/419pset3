@@ -1,4 +1,19 @@
 <!DOCTYPE html>
 <html>
-    <p>Hello</p>
+    <h1>Details for obj {{object_id}} </h1>
+    <h2>Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Accession No.</th>
+                <th>Date</th>
+                <th>Place</th>
+            </tr>
+        </thead>
+        <tbody>
+            <td>{{ search_response["accession_no"] }}</td>
+            <td>{{ search_response["date"] }}</td>
+            <td>{{ search_response["place"] }}</td>
+        </tbody>
+    </table>
 </html>
