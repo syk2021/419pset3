@@ -42,6 +42,8 @@
   cursor: pointer;
 }
 
+/* Styling for details table */
+
 .details-table th {
   padding: 5px;
   text-align: left;
