@@ -192,7 +192,7 @@ class LuxDetailsQuery(Query):
     def __init__(self, db_file):
         self._db_file = db_file
         self._columns_produced_by = [
-            "Part", "Name", "Timespan", "Nationalities"]
+            "Part", "Name", "Nationalities", "Timespan"]
         self._columns_information = ["Type", "Content"]
         self._format_str_produced = ["w", "w", "p", "w"]
         self._format_str_information = ["w", "w"]

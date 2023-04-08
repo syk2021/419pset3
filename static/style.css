@@ -41,3 +41,13 @@
   background-color: lightgray;
   cursor: pointer;
 }
+
+.details-table th {
+  padding: 5px;
+  text-align: left;
+}
+
+.details-table td,
+.details-table th {
+  padding: 5px;
+}
