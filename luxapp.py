@@ -75,6 +75,8 @@ def search():
     response.set_cookie('prev_agent', agent_search)
     response.set_cookie('prev_department', department_search)
 
+    response.set_cookie('previous_search', "False")
+
     return response
 
 
@@ -114,6 +116,6 @@ def search_obj(object_id):
         search_response=search_response)
     response = make_response(html)
 
-    response.set_cookie("previous_search", "True")
+    response.set_cookie('previous_search', "True")
 
     return response
